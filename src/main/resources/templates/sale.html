@@ -1,0 +1,117 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .card {
+            margin-bottom: 10px;
+            width: 160px;
+            height: 250px;
+        }
+
+        .card a {
+            color: black;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        #add-img {
+            border-radius: 5px;
+            width: 300px;
+            height: 300px;
+        }
+
+        .goods {
+            border-bottom: 1px solid gray;
+        }
+
+        .good-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="d-flex justify-content-between" id="goods">
+    <div class="w-75 py-5">
+        <div class="goods d-flex flex-wrap justify-content-between">
+            <div class="card" th:each="good : ${goodList}">
+                <a href="/good/details" th:href="${'/good/details?id='+good.getId()}">
+                    <img src="/upload/img/good/g1.webp" alt="" width="150px" height="150px" class="card-img-top"
+                         th:src="${good.getImg()}">
+                    <div class="card-body">
+                        <h6 class="card-title good-title" th:text="${good.getTitle()}">YSL限量眼影银盘</h6>
+                        <p class="card-text text-danger d-flex justify-content-between">
+                            <span th:text="${'￥ '+good.getPrice()}">99</span>
+                            <span th:if="${good.getState() == 0}">已售出</span>
+                        </p>
+                    </div>
+                </a>
+            </div>
+            <div class="card-temp d-none" style="border: 0"></div>
+        </div>
+        <form action="/sale/publish" method="post" enctype="multipart/form-data" class="good-add d-flex mt-5">
+            <div>
+                <img id="add-img" src="/upload/img/add.png" alt="">
+                <input type="file" name="file" id="file" class="d-none" onchange="update(this)">
+            </div>
+            <div class="ml-5 flex-grow-1 ">
+                <div class="form-group">
+                    <label>标题:</label>
+                    <input type="text" class="form-control" name="title">
+                </div>
+                <div class="form-group">
+                    <label for="category">分类</label>
+                    <select class="form-control" id="category" name="categoryId">
+                        <option th:each="category : ${categoryList}" th:text="${category.getName()}"
+                                th:value="${category.getId()}">1
+                        </option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="comment">描述:</label>
+                    <textarea class="form-control" rows="5" id="comment" name="describe"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>价格:</label>
+                    <input type="text" class="form-control" name="price">
+                </div>
+                <button class="btn btn-danger upload" type="button">上传图片</button>
+                <input class="btn btn-primary" type="submit" value="发布商品"/>
+            </div>
+        </form>
+        <script>
+            var row = 5;
+            var num = (row - $('.card').length % row) % row;
+            for (var i = num; i > 0; i--) {
+                var temp = $('.card-temp').clone();
+                temp.addClass('card');
+                temp.removeClass('card-temp');
+                temp.removeClass('d-none');
+                $('.goods').append(temp);
+            }
+            $(".upload").click(function () {
+                $("#file").click();
+            });
+
+            function update(that) {
+                var reads = new FileReader();
+                var f = document.getElementById('file').files[0];
+                reads.readAsDataURL(f);
+                reads.onload = function (e) {
+                    document.getElementById('add-img').src = this.result;
+                };
+            }
+        </script>
+    </div>
+    <div th:replace="../templates/right"></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.dao.UserDao">
+    <insert id="save">
+        insert into user(email, password, `name`, sex)
+        values (#{email},#{password},#{name},#{sex})
+    </insert>
+
+    <select id="check" resultType="Integer">
+        select ifnull((select 1 from user where email=#{email}),0)
+    </select>
+
+    <select id="login" resultType="com.example.shop.entity.User">
+        select id,email,password,img,is_admin from user where email=#{email} and password=#{password}
+    </select>
+
+    <select id="getById" resultType="com.example.shop.entity.User">
+        select email,password,`name`,sex,img,is_admin from user where id=#{userId}
+    </select>
+
+    <update id="update">
+        update user set email=#{email},password=#{password},sex=#{sex}
+        <if test="img != null and img != ''">
+            ,img=#{img}
+        </if>
+        where id=#{id}
+    </update>
+
+    <!--获取用户列表-->
+    <select id="query" resultType="com.example.shop.entity.User">
+        select id,email,password,is_admin,name,sex
+        from user
+        <where>
+            <if test="email != null and email != ''">
+                and email like "%"#{email}"%"
+            </if>
+            <if test="isAdmin != null and isAdmin != ''">
+                and is_admin=#{isAdmin}
+            </if>
+        </where>
+        limit #{page},#{limit}
+    </select>
+
+    <select id="queryCount" resultType="Integer">
+        select count(*) from user
+        <where>
+            <if test="email != null and email != ''">
+                and email like "%"#{email}"%"
+            </if>
+            <if test="isAdmin != null and isAdmin != ''">
+                and is_admin=#{isAdmin}
+            </if>
+        </where>
+    </select>
+
+    <update id="userUpdate">
+        update user set email=#{email},password=#{password},is_admin=#{isAdmin}
+        where id=#{id}
+    </update>
+
+    <delete id="del">
+        delete from user where id in
+        <foreach collection="list" item="id" open="(" separator="," close=")" index="index">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

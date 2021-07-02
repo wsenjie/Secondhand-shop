@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{admin/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <style>
+        #img {
+            width: 300px;
+            height: 300px;
+        }
+
+        .right {
+            display: inline-block;
+            margin-left: 15px;
+        }
+
+        .left {
+            vertical-align: top;
+            display: inline-block;
+        }
+    </style>
+    <h2>用户管理</h2>
+    <br>
+    <form class="layui-form layui-form-pane form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" name="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">管理员</label>
+            <div class="layui-input-inline">
+                <select name="isAdmin">
+                    <option value="">请选择</option>
+                    <option value="0">否</option>
+                    <option value="1">是</option>
+                </select>
+            </div>
+            <div class="layui-input-item">
+                <button class="layui-btn" id="query" lay-submit lay-filter="querySubmit">查询</button>
+                <button type="reset" class="layui-btn layui-btn-danger">重置</button>
+            </div>
+        </div>
+    </form>
+
+    <table id="table" lay-filter="table"></table>
+
+    <form id="update" class="layui-form layui-form-pane form" action="" lay-filter="updateForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-inline">
+                <input type="text" name="email" placeholder="请输入邮箱"  autocomplete="off" class="layui-input"
+                       required lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="text" name="password" placeholder="请输入密码"  autocomplete="off" class="layui-input"
+                       lay-verify="required">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">管理员</label>
+            <div class="layui-input-inline">
+                <select name="isAdmin" id="identityState-update" lay-verify="required">
+                    <option value="0">否</option>
+                    <option value="1">是</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-submit lay-filter="updateSubmit">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+
+    <script>
+        layui.use(['form', 'table'], function () {
+            var form = layui.form;
+            var table = layui.table;
+
+            var tableIns = tableInstance(table, '/query', [
+                {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'},
+                {field: 'email', title: '邮箱'},
+                {field: 'password', title: '密码'},
+                {field: 'name', title: '姓名'},
+                {field: 'sex', title: '性别'},
+                {field: 'isAdmin', title: '是否为管理员'},
+            ]);
+            querySubmit(form, tableIns);
+            listenTool(table, form, '/getById', '/user/update', '/del', null, null);
+        });
+    </script>
+</div>
+</body>
+</html>

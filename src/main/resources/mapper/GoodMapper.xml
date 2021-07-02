@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.dao.GoodDao">
+    <insert id="save">
+        insert into good(user_id,category_id,title, `describe`, price, img)
+        values (#{userId},#{categoryId},#{title},#{describe},#{price},#{img})
+    </insert>
+
+    <select id="getListByUserId" resultType="com.example.shop.entity.Good">
+        select id,title,price,img,state from good where user_id=#{userId}
+        <if test="categoryId != 0">and category_id=#{categoryId}</if>
+        <if test="search != null and search != ''">and title like "%"#{search}"%"</if>
+        order by id desc
+    </select>
+
+    <select id="getList" resultType="com.example.shop.entity.Good">
+        select id,title,price,img from good where state=1
+        <if test="categoryId != 0">and category_id=#{categoryId}</if>
+        <if test="search != null and search != ''">and title like "%"#{search}"%"</if>
+        order by id desc
+    </select>
+
+    <select id="getById" resultType="com.example.shop.entity.Good">
+        select id,title,`describe`,price,img,state,user_id,category_id
+        from good where id=#{id};
+    </select>
+
+    <update id="buy">
+        update good set state=0 where id=#{goodId}
+    </update>
+
+    <delete id="del">
+        delete from good where id=#{goodId}
+    </delete>
+    <update id="cancel">
+        update good g,`order` o set g.state=1
+        where g.id=o.good_id and o.id=#{orderId}
+    </update>
+
+    <select id="query" resultType="com.example.shop.entity.Good">
+        select id, user_id, category_id, title, price, state
+        from good where 1=1
+        <if test="title != null and title != ''">and title like "%"#{title}"%"</if>
+        <if test="userId != null and userId != ''">and user_id=#{userId}</if>
+        <if test="categoryId != null and categoryId != ''">and category_id=#{categoryId}</if>
+        limit #{page},#{limit}
+    </select>
+
+    <select id="queryCount" resultType="java.lang.Integer">
+        select count(*) from good
+        <where>
+            <if test="title != null and title != ''">and title like "%"#{title}"%"</if>
+            <if test="userId != null and userId != ''">and user_id=#{userId}</if>
+            <if test="categoryId != null and categoryId != ''">and category_id=#{categoryId}</if>
+        </where>
+    </select>
+
+    <update id="update">
+        update good set title=#{title},`describe`=#{describe},user_id=#{userId},category_id=#{categoryId},price=#{price},state=#{state}
+        where id=#{id}
+    </update>
+    <delete id="delList">
+        delete from good where id in
+        <foreach collection="list" item="id" open="(" separator="," close=")" index="index">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

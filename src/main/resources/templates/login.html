@@ -1,0 +1,58 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .main{
+            width: 400px;
+            height: 553px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="py-4 d-flex flex-wrap justify-content-center align-items-center" id="goods">
+    <div class="main p-5 d-flex align-items-center">
+        <div class="w-100">
+            <h2 style="text-align: center">登录</h2>
+            <div class="form-group">
+                <label>邮箱:</label>
+                <input type="text" class="form-control email">
+            </div>
+            <div class="form-group">
+                <label>密码:</label>
+                <input type="password" class="form-control password">
+            </div>
+            <input class="btn btn-primary w-100" onclick="login()" type="submit" value="登录"/>
+            <a href="/register" class="btn btn-danger w-100 mt-3">注册</a>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            $.ajax({
+                url: '/loginAction',
+                type: 'post',
+                data: {
+                    email: $('.email').val(),
+                    password: $('.password').val()
+                },
+                success: function (data) {
+                    console.log(data);
+                    if(data !== 0){
+                        alert('登录成功');
+                        if (data === 1)
+                            location.href = '/admin/';
+                        else location.href = '/good/';
+                    }else {
+                        alert('登录失败');
+                    }
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

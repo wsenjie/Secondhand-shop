@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.dao.OrderDao">
+
+    <insert id="save" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into `order`(user_id, good_id,take_name,take_address,take_phone)
+        values (#{userId},#{goodId},#{takeName},#{takeAddress},#{takePhone})
+    </insert>
+
+    <select id="getByUserId" resultType="com.example.shop.entity.OrderDetails">
+        <if test="orderType != 2">
+            (select o.id,o.take_name,o.take_address,o.take_phone,o.state,o.express_name,o.express_number,g.id as
+            'goodId',g.title,g.img,g.price,
+            if(o.user_id=#{userId},1,0) as 'isSelf'
+            from `order` o,good g
+            where o.user_id=#{userId} and g.id=o.good_id
+            <if test="state != 0">and o.state=#{state}</if>
+            order by o.id desc)
+        </if>
+        <if test="orderType != 1 and orderType != 2">union</if>
+        <if test="orderType != 1">
+            (select o.id,o.take_name,o.take_address,o.take_phone,o.state,o.express_name,o.express_number,g.id as
+            'goodId',g.title,g.img,g.price,
+            if(o.user_id=#{userId},1,0) as 'isSelf'
+            from `order` o,good g,user u
+            where u.id=#{userId} and g.user_id=u.id and g.state=0 and o.good_id=g.id
+            <if test="state != 0">and o.state=#{state}</if>
+            order by o.id desc)
+        </if>
+    </select>
+
+    <update id="pay">
+        update `order` set state=2
+        where state=1 and id=#{orderId}
+    </update>
+
+    <delete id="del">
+        delete from `order` where id=#{orderId}
+    </delete>
+
+    <update id="ship">
+        update `order` set state=3,express_name=#{expressName},express_number=#{expressNumber}
+        where state=2 and id=#{orderId}
+    </update>
+
+    <update id="receipt">
+        update `order` set state=4
+        where state=3 and id=#{orderId}
+    </update>
+
+
+    <select id="query" resultType="com.example.shop.entity.Order">
+        select id, user_id, good_id, take_name, take_phone,express_name, state
+        from `order` <where>
+        <if test="takeName != null and takeName != ''">and take_name  like "%"#{takeName}"%"</if>
+        <if test="userId != null and userId != ''">and user_id=#{userId}</if>
+        <if test="goodId != null and goodId != ''">and good_id=#{goodId}</if>
+        <if test="state != null and state != ''">and state=#{state}</if>
+    </where>
+        limit #{page},#{limit}
+    </select>
+
+    <select id="queryCount" resultType="java.lang.Integer">
+        select count(*)
+        from `order` where 1=1
+        <if test="takeName != null and takeName != ''">and take_name like "%"#{takeName}"%"</if>
+        <if test="userId != null and userId != ''">and user_id=#{userId}</if>
+        <if test="goodId != null and goodId != ''">and good_id=#{goodId}</if>
+        <if test="state != null and state != ''">and state=#{state}</if>
+    </select>
+
+    <update id="update">
+        update `order` set user_id=#{userId},good_id=#{goodId},take_name=#{takeName},take_phone=#{takePhone},state=#{state},
+            express_name=#{expressName},express_number=#{expressNumber},take_address=#{takeAddress}
+        where id=#{id}
+    </update>
+
+    <delete id="delList">
+        delete from `order` where id in
+        <foreach collection="list" item="id" open="(" separator="," close=")" index="index">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getById" resultType="com.example.shop.entity.Order">
+        select *  from `order` where id=#{id};
+    </select>
+</mapper>

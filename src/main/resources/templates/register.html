@@ -1,0 +1,72 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .main{
+            width: 400px;
+            height: 553px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="py-4 d-flex flex-wrap justify-content-center align-items-center" id="goods">
+    <div class="main p-5 d-flex align-items-center">
+        <div class="w-100">
+            <h2 style="text-align: center">注册</h2>
+            <div class="form-group">
+                <label>邮箱:</label>
+                <input type="text" class="form-control email">
+            </div>
+            <div class="form-group">
+                <label>密码:</label>
+                <input type="password" class="form-control password">
+            </div>
+            <div class="form-group">
+                <label>确认密码:</label>
+                <input type="password" class="form-control password2">
+            </div>
+            <div class="form-group">
+                <label>真实姓名:</label>
+                <input type="text" class="form-control name">
+            </div>
+            <div class="form-group">
+                <label>性别:</label>
+                <input type="text" class="form-control sex">
+            </div>
+            <input onclick="register()" class="btn btn-primary w-100" type="submit" value="注册"/>
+        </div>
+    </div>
+    <script>
+        function register() {
+            $.ajax({
+                url: '/registerAction',
+                type: 'post',
+                data: {
+                    email: $('.email').val(),
+                    password: $('.password').val(),
+                    name: $('.name').val(),
+                    sex: $('.sex').val()
+                },
+                success: function (data) {
+                    if(data === 1){
+                        alert('注册成功,请登录');
+                        location.href = '/login';
+                    }else {
+                        if(data === 0) {
+                            alert('注册失败,用户已存在');
+                        }else{
+                            alert('注册失败,请填写完整');
+                        }
+                        location.href = '/register'
+                    }
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

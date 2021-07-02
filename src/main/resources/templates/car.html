@@ -1,0 +1,63 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .card {
+            margin-bottom: 10px;
+            width: 160px;
+            height: 250px;
+        }
+
+        .card a {
+            color: black;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        .good-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="d-flex flex-wrap justify-content-between" style="min-height: 602px;">
+    <div class="w-75 my-5">
+        <div class="d-flex flex-wrap justify-content-between goods">
+            <div class="card" th:each="good : ${goodList}">
+                <a href="/good/details?id=1" th:href="${'/good/details?id='+good.getId()}">
+                    <img src="/upload/img/good/g1.webp" alt="" width="150px" height="150px" class="card-img-top"
+                         th:src="${good.getImg()}">
+                    <div class="card-body">
+                        <h6 class="card-title good-title" th:text="${good.getTitle()}">YSL限量眼影银盘</h6>
+                        <p class="card-text text-danger">￥ <span th:text="${good.getPrice()}">99</span></p>
+                    </div>
+                </a>
+            </div>
+            <div class="card-temp d-none" style="border: 0"></div>
+        </div>
+
+        <script>
+            var row = 5;
+            var num = (row - $('.card').length % row) % row;
+            console.log(num);
+            for (var i = num; i > 0; i--) {
+                var temp = $('.card-temp').clone();
+                temp.addClass('card');
+                temp.removeClass('card-temp');
+                temp.removeClass('d-none');
+                $('.goods').append(temp);
+            }
+        </script>
+    </div>
+    <div th:replace="../templates/right"></div>
+</div>
+</body>
+</html>

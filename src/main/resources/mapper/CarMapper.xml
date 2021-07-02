@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shop.dao.CarDao">
+
+    <insert id="save">
+        insert into car(user_id, good_id) values (#{userId},#{goodId})
+    </insert>
+
+    <select id="getByUserId" resultType="com.example.shop.entity.Good">
+        select g.id,g.title,g.`describe`,g.price,g.img,g.state from car c,good g
+        where c.good_id=g.id and c.user_id=#{userId}
+        <if test="categoryId != 0">and g.category_id=#{categoryId}</if>
+        <if test="search != null and search != ''">and g.title like "%"#{search}"%"</if>
+    </select>
+
+    <select id="isInCar" resultType="java.lang.Integer">
+        select ifnull((select 1 from car where user_id=#{userId} and good_id=#{goodId}),0)
+    </select>
+
+    <delete id="del">
+        delete from car where user_id=#{userId} and good_id=#{goodId}
+    </delete>
+</mapper>

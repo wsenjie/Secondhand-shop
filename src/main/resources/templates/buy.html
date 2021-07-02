@@ -1,0 +1,44 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+</head>
+<body>
+<div layout:fragment="content" class="py-4" id="goods" style="min-height: 602px;">
+    <div class="item py-4 d-flex" style="border-bottom: 1px solid;height: 300px;">
+        <div class="img">
+            <img src="/upload/img/good/g1.webp" th:src="${good.getImg()}" alt="" width="250px" height="250px"
+                 style="border-radius: 5px;">
+        </div>
+        <div class="content ml-5 w-100">
+            <h2 class="title" th:text="${good.getTitle()}">YSL限量眼影银盘</h2>
+            <div class="describe mt-5" style="height: 120px" th:text="${good.getDescribe()}">
+                春季纯色百搭工装衬衣日系复古简约休闲衬衫男士宽松百搭外套潮春季纯色百搭工装衬衣日系复古简约休闲衬衫男士宽松百搭外套潮
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="price text-danger">￥ <span th:text="${good.getPrice()}">99</span></h4>
+            </div>
+        </div>
+    </div>
+    <form action="/order/save" method="post" class="mt-5">
+        <input type="hidden" name="goodId" th:value="${good.getId()}">
+        <div class="form-group">
+            <label >收货人:</label>
+            <input type="text" class="form-control" name="takeName">
+        </div>
+        <div class="form-group">
+            <label >收货地址:</label>
+            <input type="text" class="form-control" name="takeAddress">
+        </div>
+        <div class="form-group">
+            <label >联系电话:</label>
+            <input type="text" class="form-control" name="takePhone">
+        </div>
+        <input class="btn btn-primary mt-3 w-100" type="submit"/>
+    </form>
+</div>
+</body>
+</html>

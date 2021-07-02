@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{admin/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <h2>分类管理</h2>
+    <br>
+    <form class="layui-form layui-form-pane form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">分类名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" placeholder="请输入分类名称" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-item">
+                <button class="layui-btn" id="query" lay-submit lay-filter="querySubmit">查询</button>
+                <button type="reset" class="layui-btn layui-btn-danger">重置</button>
+            </div>
+        </div>
+    </form>
+
+    <table id="table" lay-filter="table"></table>
+
+    <form id="update" class="layui-form layui-form-pane form" action="" lay-filter="updateForm">
+        <div class="layui-form-item">
+            <label class="layui-form-label">分类名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="name" placeholder="请输入分类名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-submit lay-filter="updateSubmit">提交</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </form>
+
+    <script>
+        layui.use(['form', 'table'], function () {
+            var form = layui.form;
+            var table = layui.table;
+
+            var tableIns = tableInstance(table, '/category/query', [
+                {field: 'id', title: 'ID', width: 80, sort: true, fixed: 'left'},
+                {field: 'name', title: '分类名称'},
+            ]);
+            querySubmit(form, tableIns);
+            listenTool(table, form, '/category/getById', '/category/update', '/category/delList', null, null);
+        });
+    </script>
+</div>
+</body>
+</html>

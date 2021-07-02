@@ -1,0 +1,42 @@
+<div th:fragment="right" class="w-25 py-5 pl-5" style="min-height: 350px;" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="border pb-2 mb-3">
+        <h6 class="m-3 pb-1 border-bottom">我的资料</h6>
+        <a href="/login" class="h-100 m-3 d-flex align-items-center" th:if="${user.getName() == null}">登录</a>
+        <div th:if="${user.getName() != null}" class="text-center">
+            <a href="/info" class="d-flex align-items-center justify-content-center">
+                <img class="m-2" src="/upload/img/head.jpg" th:src="${user.getImg()}" alt="" width="60px" height="60px"
+                     style="border-radius: 30px">
+            </a>
+            <h6 class="" th:text="${'欢迎您，' + user.getName()}">admin</h6>
+            <a href="/logout"><h6>注销</h6></a>
+        </div>
+    </div>
+    <div class="border p-3" th:if="${categoryList != null}">
+        <h6 class="pb-1 border-bottom">商品分类</h6>
+        <ul class="nav">
+            <li class="nav-item mt-1"><a href="./" class="mr-3">全部分类</a></li>
+            <li class="nav-item mt-1" th:each="category : ${categoryList}">
+                <a href="" th:href="${'./?categoryId='+category.getId()}" class="mr-3" th:text="${category.getName()}">数码</a>
+            </li>
+        </ul>
+    </div>
+    <div th:if="${categoryList == null}">
+        <div class="border p-3 mb-3">
+            <h6 class="pb-1 border-bottom">订单分类</h6>
+            <ul class="nav">
+                <li class="nav-item mt-1"><a href="./" class="mr-3">全部订单</a></li>
+                <li class="nav-item mt-1"><a href="./?orderType=1" class="mr-3">买入订单</a></li>
+                <li class="nav-item mt-1"><a href="./?orderType=2" class="mr-3">卖出订单</a></li>
+            </ul>
+        </div>
+        <div class="border p-3 mb-3">
+            <h6 class="pb-1 border-bottom">订单状态</h6>
+            <ul class="nav">
+                <li class="nav-item mt-1"><a href="./?state=1" class="mr-3">待确认</a></li>
+                <li class="nav-item mt-1"><a href="./?state=2" class="mr-3">待发货</a></li>
+                <li class="nav-item mt-1"><a href="./?state=3" class="mr-3">待收货</a></li>
+                <li class="nav-item mt-1"><a href="./?state=4" class="mr-3">已完成</a></li>
+            </ul>
+        </div>
+    </div>
+</div>

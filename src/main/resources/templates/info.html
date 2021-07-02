@@ -1,0 +1,121 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        .main {
+            height: 601px;
+        }
+
+        .left .head-img {
+            border-radius: 5px;
+            width: 300px;
+            height: 300px;
+        }
+
+        .right .head-describe {
+            position: relative;
+            vertical-align: top;
+            top: 16px;
+            left: 18px;
+            color: gray;
+        }
+
+        .right {
+            display: inline-block;
+            margin-left: 15px;
+        }
+
+        .left {
+            vertical-align: top;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="py-4 d-flex flex-wrap justify-content-center align-items-center main">
+    <div class="">
+        <input type="file" name="file" id="file" class="d-none" onchange="viewImg()">
+        <div class="left">
+            <img class="head-img" src="/upload/img/head.jpg" alt="" th:src="${user.getImg()}">
+        </div>
+        <div class="right">
+            <div class="mb-3">
+                <div class="btn btn-primary" id="upload" onclick="changeImg()">上传图片</div>
+                <span class="head-describe">图片分辨率 : 300 * 300</span>
+            </div>
+            <div class="form-group d-flex">
+                <label style="width: 90px" class="d-flex align-items-center m-0">邮箱:</label>
+                <input type="text" class="form-control email" th:value="${user.getEmail()}">
+            </div>
+            <div class="form-group d-flex">
+                <label style="width: 90px" class="d-flex align-items-center m-0">密码:</label>
+                <input type="password" class="form-control password" th:value="${user.getPassword()}">
+            </div>
+            <div class="form-group d-flex">
+                <label style="width: 90px" class="d-flex align-items-center m-0">姓名:</label>
+                <input type="text" class="form-control name" th:value="${user.getName()}">
+            </div>
+            <div class="form-group d-flex">
+                <label style="width: 90px" class="d-flex align-items-center m-0">性别:</label>
+                <input type="text" class="form-control sex" th:value="${user.getSex()}">
+            </div>
+            <input class="btn btn-primary w-100" onclick="update()" type="submit" value="修改"/>
+        </div>
+    </div>
+
+    <script>
+        // 模拟点击
+        function changeImg() {
+            $('#file').click();
+        }
+        // 预览图片
+        function viewImg() {
+            // 先判断一个elem的文件是否是正确的格式
+            var files = $('#file')[0].files;
+            console.log(files);
+            if (files && files[0]) {
+                // 格式正确进入
+                // 创建一个FileReader实例
+                var fileReader = new FileReader();
+                // 加载file的文件
+                fileReader.readAsDataURL(files[0]);
+
+                // 监听加载完成
+                fileReader.onload = function () {
+                    // result就是FileReader得到的数据内容
+                    $('.left .head-img').attr('src',this.result);
+                }
+            }
+        }
+        // 更新操作
+        function update() {
+            var formData = new FormData();
+            formData.append("email", $('.email').val());
+            formData.append("password", $('.password').val());
+            formData.append("name", $('.name').val());
+            formData.append("sex", $('.sex').val());
+            if ($('#file')[0].files[0] !== undefined)
+                formData.append("file", $('#file')[0].files[0]);
+            $.ajax({
+                url: '/update',
+                type: 'post',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if (data) {
+                        alert('修改成功');
+                    } else {
+                        alert('修改失败');
+                    }
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>
