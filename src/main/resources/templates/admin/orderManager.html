@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml"
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
       layout:decorate="~{admin/layout}">
 <head>
     <meta charset="UTF-8">
@@ -116,7 +116,7 @@
                 {field: 'takeName', title: '收货人'},
                 {field: 'takePhone', title: '联系电话'},
                 {field: 'expressName', title: '快递公司'},
-                {field: 'state', title: '订单状态'},
+                {field: 'state', title: '订单状态'}
             ]);
             querySubmit(form, tableIns);
             listenTool(table, form, '/order/getById', '/order/update', '/order/delList', null, null);

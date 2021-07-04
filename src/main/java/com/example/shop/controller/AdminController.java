@@ -11,6 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 管理员控制器类
+ */
 @RestController
 @RequestMapping("/admin/")
 public class AdminController {
@@ -19,6 +22,10 @@ public class AdminController {
     @Resource
     private UserDao userDao;
 
+    /**
+     * 用户管理
+     * @return
+     */
     @GetMapping("")
     public ModelAndView userManager(){
         ModelAndView mv = new ModelAndView();
@@ -27,6 +34,11 @@ public class AdminController {
         mv.setViewName("admin/userManager");
         return mv;
     }
+
+    /**
+     * 商品管理
+     * @return
+     */
     @GetMapping("good")
     public ModelAndView goodManager(){
         ModelAndView mv = new ModelAndView();
@@ -35,6 +47,11 @@ public class AdminController {
         mv.setViewName("admin/goodManager");
         return mv;
     }
+
+    /**
+     * 分类管理
+     * @return
+     */
     @GetMapping("category")
     public ModelAndView categoryManager(){
         ModelAndView mv = new ModelAndView();
@@ -43,6 +60,11 @@ public class AdminController {
         mv.setViewName("admin/categoryManager");
         return mv;
     }
+
+    /**
+     * 订单管理
+     * @return
+     */
     @GetMapping("order")
     public ModelAndView orderManager(){
         ModelAndView mv = new ModelAndView();
@@ -51,6 +73,11 @@ public class AdminController {
         mv.setViewName("admin/orderManager");
         return mv;
     }
+
+    /**
+     * 留言管理
+     * @return
+     */
     @GetMapping("message")
     public ModelAndView messageManager(){
         ModelAndView mv = new ModelAndView();

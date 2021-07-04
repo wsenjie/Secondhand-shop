@@ -28,6 +28,7 @@ public class Order {
     private String expressName;
     //快递订单号
     private String expressNumber;
-    //订单状态  1为
+    //订单状态  1:待确认 2:待发货 3:待收货 4:已完成
+    //后台查询
     private String state;
 }

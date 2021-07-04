@@ -20,6 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 购物车控制器类
+ * @author sen
+ */
 @RestController
 @RequestMapping("/car/")
 public class CarController {
@@ -35,6 +39,12 @@ public class CarController {
     @Resource
     private CategoryDao categoryDao;
 
+    /**
+     * 获取购物车信息及种类信息
+     * @param categoryId
+     * @param search
+     * @return
+     */
     @GetMapping("")
     public ModelAndView index(@RequestParam(required = false,defaultValue = "0") int categoryId, @RequestParam(required = false) String search){
         ModelAndView mv = new ModelAndView();
@@ -48,7 +58,12 @@ public class CarController {
         mv.setViewName("car");
         return mv;
     }
-    // 加入购物车
+
+    /**
+     * 加入购物车
+     * @param goodId
+     * @throws IOException
+     */
     @GetMapping("save")
     public void save(int goodId) throws IOException {
         if(Function.getUserId(request) == 0){
@@ -60,7 +75,12 @@ public class CarController {
         carDao.save(car);
         response.sendRedirect("/good/details?id="+goodId);
     }
-    // 从购物车移除
+
+    /**
+     * 从购物车移除
+     * @param goodId
+     * @throws IOException
+     */
     @GetMapping("del")
     public void del(int goodId) throws IOException {
         carDao.del(goodId,Function.getUserId(request));

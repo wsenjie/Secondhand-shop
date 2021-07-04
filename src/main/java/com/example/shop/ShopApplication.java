@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
+ * 应用程序启动类
  * @author sen
  */
 @MapperScan("com.example.shop.dao")

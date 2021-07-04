@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 商品控制器类
+ */
 @Slf4j
 @RestController
 @RequestMapping("/good/")

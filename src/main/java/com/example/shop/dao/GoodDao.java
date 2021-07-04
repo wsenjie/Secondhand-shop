@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 商品mapper接口
+ */
 public interface GoodDao {
     void save(Good good);
 

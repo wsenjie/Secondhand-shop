@@ -33,6 +33,7 @@
     <delete id="del">
         delete from good where id=#{goodId}
     </delete>
+
     <update id="cancel">
         update good g,`order` o set g.state=1
         where g.id=o.good_id and o.id=#{orderId}
