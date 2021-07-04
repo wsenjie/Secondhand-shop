@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * 商品控制器类
+ * @author sen
  */
 @Slf4j
 @RestController
@@ -36,6 +37,12 @@ public class GoodController {
     @Resource
     private HttpServletResponse response;
 
+    /**
+     * 获取商品信息列表和种类信息列表
+     * @param categoryId
+     * @param search
+     * @return
+     */
     @GetMapping("")
     public ModelAndView index(@RequestParam(required = false,defaultValue = "0") int categoryId,@RequestParam(required = false) String search){
         ModelAndView mv = new ModelAndView();
@@ -50,7 +57,11 @@ public class GoodController {
         return mv;
     }
 
-    // 商品详情页面
+    /**
+     * 商品详情页面
+     * @param id
+     * @return
+     */
     @GetMapping("details")
     public ModelAndView details(int id){
         ModelAndView mv = new ModelAndView();
@@ -58,7 +69,9 @@ public class GoodController {
         if (good.getUserId() != Function.getUserId(request)){
             good.setUserId(0);
         }
+        //获取留言列表信息
         List<Message> messageList = messageDao.getListByGoodId(good.getId());
+        //判断是否在购物车
         int isInCar = carDao.isInCar(id,Function.getUserId(request));
         mv.addObject("isInCar",isInCar);
         mv.addObject(good);
@@ -67,7 +80,12 @@ public class GoodController {
         return mv;
     }
 
-    // 商品留言
+    /**
+     * 商品留言
+     * @param content
+     * @param goodId
+     * @throws IOException
+     */
     @GetMapping("message")
     public void message(String content,int goodId) throws IOException {
         if(Function.getUserId(request) == 0){
@@ -77,16 +95,27 @@ public class GoodController {
         message.setContent(content);
         message.setGoodId(goodId);
         message.setUserId(Function.getUserId(request));
+        //保存留言信息
         messageDao.save(message);
         response.sendRedirect("/good/details?id="+goodId);
     }
-    // 删除
+
+    /**
+     * 后台删除（商品id）
+     * @param goodId
+     * @throws IOException
+     */
     @GetMapping("del")
     public void del(int goodId) throws IOException {
         goodDao.del(goodId);
         response.sendRedirect("/sale/");
     }
 
+    /**
+     * 分页查询
+     * @param query
+     * @return
+     */
     @GetMapping("query")
     public TableData query(GoodQuery query){
         query.setPage((query.getPage() - 1) * query.getLimit());
@@ -95,16 +124,33 @@ public class GoodController {
         tableData.setCount(goodDao.queryCount(query));
         return tableData;
     }
-    // 后台删除
+
+    /**
+     * 后台批量删除
+     * @param idList
+     * @return
+     */
     @GetMapping("delList")
     public boolean delList(@RequestParam(name = "idList[]")List<Integer> idList){
         goodDao.delList(idList);
         return true;
     }
+
+    /**
+     * 查询商品信息（商品id）
+     * @param id
+     * @return
+     */
     @GetMapping("getById")
     public Good getById(int id){
         return goodDao.getById(id);
     }
+
+    /**
+     * 后台更新
+     * @param good
+     * @return
+     */
     @PostMapping("update")
     public boolean userUpdate(Good good){
         goodDao.update(good);

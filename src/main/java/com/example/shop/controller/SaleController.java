@@ -18,6 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 用户出售控制器类
+ * @author sen
+ */
 @Slf4j
 @RestController
 @RequestMapping("/sale/")
@@ -36,6 +40,12 @@ public class SaleController {
     @Resource
     private UserDao userDao;
 
+    /**
+     * 获取商品信息列表和种类信息列表
+     * @param categoryId
+     * @param search
+     * @return
+     */
     @GetMapping("")
     public ModelAndView index(@RequestParam(required = false,defaultValue = "0") int categoryId, @RequestParam(required = false) String search){
         ModelAndView mv = new ModelAndView();
@@ -50,13 +60,18 @@ public class SaleController {
         return mv;
     }
 
-    // 发布商品
+    /**
+     * 发布商品
+     * @param good
+     * @throws IOException
+     */
     @PostMapping("publish")
     public void publish(Good good) throws IOException {
         if (good.getFile() != null) {
             good.setImg(fileUpload.save(good.getFile()));
         }
         good.setUserId(Function.getUserId(request));
+        //保存商品信息
         goodDao.save(good);
         response.sendRedirect("/sale/");
     }
