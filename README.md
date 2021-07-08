@@ -89,7 +89,7 @@ public class ShopApplication {
 
 ## 六、运行项目
 
-网页输入：http://localhost:8000/进入首页
+首页：http://localhost:8000/
 
 
 
