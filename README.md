@@ -18,31 +18,38 @@ CREATE DATABASE shop;
 
 ## 二、数据库表结构
 
-> ​		shop—
-> ​					|—car：购物车表
-> ​					|—category：种类表
-> ​					|—good：商品表
-> ​					|—message：留言表
-> ​					|—order：订单表
-> ​					|—user：用户表
+- shop
+  - car：购物车表
+  - category：种类表
+  - good：商品表
+  - message：留言表
+  - order：订单表
+  - user：用户表
 
 
 
 ## 三、项目结构介绍
 
-> ​		|—java
-> ​			|—com.example.shop
-> ​				|—config：自定义配置类
-> ​				|—controller：Controller层
-> ​				|—dao：数据操作层DAO
-> ​				|—entity：实体类
-> ​				|—util：自定义工具类
-> ​				|—Application：应用启动类
-> ​		|—resource
-> ​			|—mapper：mapper映射文件
-> ​			|—public：图片文件上传（存储静态文件）
-> ​			|—templates：动态页面
-> ​			|—application.yml：应用配置文件，应用启动自动读取配置
+- java
+
+  - com.example.shop
+
+    - config：自定义配置类
+
+    - controller：Controller层
+
+    - dao：数据操作层DAO
+
+    - entity：实体类
+
+    - util：自定义工具类
+    - Application：应用启动类
+  - resource
+      - mapper：mapper映射文件
+      - public：图片文件上传（存储静态文件）
+      - templates：动态页面
+      - application.yml：应用配置文件，应用启动自动读取配置
+      - 
 
 
 
@@ -87,7 +94,7 @@ public class ShopApplication {
 
 
 
-## 六、运行项目
+## 六、项目运行
 
 首页：http://localhost:8000/
 
