@@ -56,10 +56,10 @@ CREATE DATABASE shop;
 
 ```yaml
 mybatis:  
-	mapper-locations: classpath:mapper/*.xml  # mapper文件地址
-	configuration:
+  mapper-locations: classpath:mapper/*.xml  # mapper文件地址
+  configuration:
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl    
-	map-underscore-to-camel-case: true
+  map-underscore-to-camel-case: true
 ```
 
 **在 Application 应用启动类添加注解 @MapperScan**
